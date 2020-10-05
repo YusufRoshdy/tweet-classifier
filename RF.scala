@@ -18,7 +18,7 @@ object RFModel {
             .withColumn("label", 'label cast DoubleType)
         val Array(training, test) = data.randomSplit(Array(0.7, 0.3))
 
-        // Configure an ML pipeline with 3 stages: tokenizer, hasingTF, idf, rf
+        // Configure an ML pipeline with 4 stages: tokenizer, hasingTF, idf, rf
         val tokenizer = new Tokenizer()
             .setInputCol("text")
             .setOutputCol("words")
