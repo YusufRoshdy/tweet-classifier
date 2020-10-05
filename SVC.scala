@@ -30,8 +30,6 @@ object SVCModel {
             .setOutputCol("features")
         val svc = new LinearSVC()
             .setMaxIter(100)
-            .setFeaturesCol("normedW2V")
-            .setLabelCol("label")
         val pipeline = new Pipeline()
             .setStages(Array(tokenizer, hashingTF, idf, svc))
 
