@@ -1,4 +1,4 @@
-paramGridimport org.apache.spark.ml.Pipeline
+import org.apache.spark.ml.Pipeline
 import org.apache.spark.sql.types.DoubleType
 import org.apache.spark.ml.classification.LinearSVC
 import org.apache.spark.ml.feature.{HashingTF, Tokenizer, IDF}
@@ -63,7 +63,7 @@ object SVCModel {
 
         // Evaluate model
         val f1 = evaluator.evaluate(predictions);
-        println(s"\nLogistic Regression Model's F1 score: $f1\n")
+        println(s"\nSVC Model's F1 score: $f1\n")
         spark.stop()
     }
 }
