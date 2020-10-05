@@ -31,7 +31,7 @@ object Stream {
             import spark.implicits._
 
             // Convert RDD[String] to DataFrame
-            val linesDataFrame = rdd.map((format.foramt(time), _)).toDF("time", "text")
+            val linesDataFrame = rdd.map((format.format(time), _)).toDF("time", "text")
 
             // Make prediction
             val predictions = model.transform(linesDataFrame)
