@@ -29,7 +29,7 @@ object RFModel {
             .setInputCol(hashingTF.getOutputCol)
             .setOutputCol("features")
         val rf = new RandomForestClassifier()
-            .setNumTrees(10)
+            .setNumTrees(100)
         val pipeline = new Pipeline()
             .setStages(Array(tokenizer, hashingTF, idf, rf))
 
