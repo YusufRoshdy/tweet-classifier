@@ -1,4 +1,5 @@
 import org.apache.spark.ml.Pipeline
+import org.apache.spark.sql.types.DoubleType
 import org.apache.spark.ml.classification.RandomForestClassifier
 import org.apache.spark.ml.feature.{HashingTF, Tokenizer, IDF}
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
@@ -10,10 +11,12 @@ object RFModel {
         val spark = SparkSession.builder.appName("RFModel").getOrCreate()
         import spark.implicits._
 
-        // Prepare training documents
-        val pos = spark.read.textFile("train/pos/").map((_, 0.0)).toDF("text", "label")
-        val neg = spark.read.textFile("train/neg/").map((_, 1.0)).toDF("text", "label")
-        val training = pos.unionByName(neg)
+        // Prepare dataset
+        val data = spark.read.format("csv")
+            .option("header", "true")
+            .load("data.csv")
+            .withColumn("label", 'label cast DoubleType)
+        val Array(training, test) = data.randomSplit(Array(0.7, 0.3))
 
         // Configure an ML pipeline with 3 stages: tokenizer, hasingTF, idf, rf
         val tokenizer = new Tokenizer()
@@ -52,11 +55,6 @@ object RFModel {
 
         // Load it back during production
         // val sameModel = CrossValidatorModel.load("cv-logistic-regression-model")
-
-        // Prepare test documents
-        val test_pos = spark.read.textFile("test/pos/").map((_, 0.0)).toDF("text", "label")
-        val test_neg = spark.read.textFile("test/neg/").map((_, 1.0)).toDF("text", "label")
-        val test = test_pos.unionByName(test_neg)
 
         // Make prediction on test
         val predictions = model.transform(test)

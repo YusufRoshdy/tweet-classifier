@@ -43,8 +43,8 @@ object Stream {
         // Start computation
         ssc.start()
         // Wait for a day or the computation to terminate
-        // ssc.awaitTerminationOrTimeout(86400000)
-        ssc.awaitTerminationOrTimeout(180000)
+        ssc.awaitTerminationOrTimeout(86400000)
+        // ssc.awaitTerminationOrTimeout(180000)
     }
 }
 
