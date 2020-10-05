@@ -38,7 +38,6 @@ object SVCModel {
         // Construct a grid of parameter to search over
         val paramGrid = new ParamGridBuilder()
             .addGrid(hashingTF.numFeatures, Array(10, 100, 1000))
-            .addGrid(svc.setRegParam, Array(0.0, 0.01, 0.1, 1))
             .build()
 
         // Treat the Pipeline as an Estimator, wrapping it in a CrossValidator instance.
