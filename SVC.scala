@@ -1,4 +1,4 @@
-import org.apache.spark.ml.Pipeline
+paramGridimport org.apache.spark.ml.Pipeline
 import org.apache.spark.sql.types.DoubleType
 import org.apache.spark.ml.classification.LinearSVC
 import org.apache.spark.ml.feature.{HashingTF, Tokenizer, IDF}
@@ -39,7 +39,7 @@ object SVCModel {
         // Construct a grid of parameter to search over
         val paramGrid = new ParamGridBuilder()
             .addGrid(hashingTF.numFeatures, Array(10, 100, 1000))
-            .addGrid(svc.setRegParam, Array(0.01, 0.1, 1))
+            .addGrid(svc.setRegParam, Array(0.0, 0.01, 0.1, 1))
             .build()
 
         // Treat the Pipeline as an Estimator, wrapping it in a CrossValidator instance.
