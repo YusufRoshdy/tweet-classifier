@@ -14,7 +14,7 @@ object LRModel {
         // Prepare dataset
         val data = spark.read.format("csv")
             .option("header", "true")
-            .load("data.csv")
+            .load(args(0))
             .withColumn("label", 'label cast DoubleType)
         val Array(training, test) = data.randomSplit(Array(0.7, 0.3))
 
@@ -52,11 +52,11 @@ object LRModel {
         val model = cv.fit(training)
 
         // Save fitted pipeline to disk
-        model.write.overwrite().save("lr-cv-model")
+        model.write.overwrite().save(args(1))
 
         // Make prediction on test
         val predictions = model.transform(test)
-        predictions.select("text", "label", "prediction").write.csv("lr-output")
+        predictions.select("text", "label", "prediction").write.csv(args(2))
 
         // Evaluate model
         val f1 = evaluator.evaluate(predictions);

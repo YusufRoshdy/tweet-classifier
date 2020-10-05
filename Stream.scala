@@ -18,7 +18,7 @@ object Stream {
         val lines = ssc.socketTextStream("10.90.138.32", 8989)
 
         // Load model
-        val lr_model = CrossValidatorModel.load("lr-cv-model")
+        val model = CrossValidatorModel.load(args(0))
         // val rf_model = CrossValidatorModel.load("rf-model")
 
         lines.foreachRDD { (rdd: RDD[String], time: Time) =>
@@ -30,12 +30,12 @@ object Stream {
             val linesDataFrame = rdd.map((time.toString(), _)).toDF("time", "text")
 
             // Make prediction
-            val lr_predictions = lr_model.transform(linesDataFrame)
+            val predictions = model.transform(linesDataFrame)
             // val rf_predictions = rf_model.transform(linesDataFrame)
 
             // Write output
-            lr_predictions.select("time", "text", "prediction")
-                .write.mode("append").csv("lr-pred")
+            predictions.select("time", "text", "prediction")
+                .write.mode("append").csv(args(1))
             // rf_predictions.select("time", "text", "prediction")
             //    .write.mode("append").csv("rf-pred")
         }

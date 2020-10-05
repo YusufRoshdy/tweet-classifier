@@ -14,7 +14,7 @@ object RFModel {
         // Prepare dataset
         val data = spark.read.format("csv")
             .option("header", "true")
-            .load("data.csv")
+            .load(args(0))
             .withColumn("label", 'label cast DoubleType)
         val Array(training, test) = data.randomSplit(Array(0.7, 0.3))
 
@@ -51,14 +51,14 @@ object RFModel {
         val model = cv.fit(training)
 
         // Save fitted pipeline to disk
-        model.write.overwrite().save("rf-model")
+        model.write.overwrite().save(args(1))
 
         // Load it back during production
         // val sameModel = CrossValidatorModel.load("cv-logistic-regression-model")
 
         // Make prediction on test
         val predictions = model.transform(test)
-        predictions.select("text", "label", "prediction").write.csv("rf-output")
+        predictions.select("text", "label", "prediction").write.csv(args(2))
 
         // Evaluate model
         val f1 = evaluator.evaluate(predictions);
