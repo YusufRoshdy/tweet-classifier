@@ -1,6 +1,6 @@
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
-import org.apache.spark.ml.feature.{HashingTF, Tokenizer}
+import org.apache.spark.ml.feature.{HashingTF, Tokenizer, IDF}
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.tuning.{CrossValidator, ParamGridBuilder}
 import org.apache.spark.sql.SparkSession
@@ -15,17 +15,20 @@ object LRModel {
         val neg = spark.read.textFile("train/neg/").map((_, 1.0)).toDF("text", "label")
         val training = pos.unionByName(neg)
 
-        // Configure an ML pipeline with 3 stages: tokenizer, hasingTF, lr
+        // Configure an ML pipeline with 4 stages: tokenizer, hasingTF, idf, lr
         val tokenizer = new Tokenizer()
             .setInputCol("text")
             .setOutputCol("words")
         val hashingTF = new HashingTF()
             .setInputCol(tokenizer.getOutputCol)
+            .setOutputCol("rawFeatures")
+        val idf = new IDF()
+            .setInputCol(hashingTF.getOutputCol)
             .setOutputCol("features")
         val lr = new LogisticRegression()
             .setMaxIter(10)
         val pipeline = new Pipeline()
-            .setStages(Array(tokenizer, hashingTF, lr))
+            .setStages(Array(tokenizer, hashingTF, idf, lr))
 
         // Construct a grid of parameter to search over
         val paramGrid = new ParamGridBuilder()
@@ -49,9 +52,9 @@ object LRModel {
         model.write.overwrite().save("lr-cv-model")
 
         // Prepare test documents
-        val test_pos = spark.read.textFile("test/pos/").map((_, 0.0)).toDF("text", "label")
-        val test_neg = spark.read.textFile("test/neg/").map((_, 1.0)).toDF("text", "label")
-        val test = test_pos.unionByName(test_neg)
+        val testPos = spark.read.textFile("test/pos/").map((_, 0.0)).toDF("text", "label")
+        val testNeg = spark.read.textFile("test/neg/").map((_, 1.0)).toDF("text", "label")
+        val test = testPos.unionByName(testNeg)
 
         // Make prediction on test
         val predictions = model.transform(test)
@@ -59,7 +62,7 @@ object LRModel {
 
         // Evaluate model
         val f1 = evaluator.evaluate(predictions);
-        println(s"Logistic Regression Model's F1 score: $f1")
+        println(s"\nLogistic Regression Model's F1 score: $f1\n")
         spark.stop()
     }
 }
