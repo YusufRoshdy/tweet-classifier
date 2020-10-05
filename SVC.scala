@@ -32,7 +32,6 @@ object SVCModel {
             .setMaxIter(100)
             .setFeaturesCol("normedW2V")
             .setLabelCol("label")
-            .fit(trainingData)
         val pipeline = new Pipeline()
             .setStages(Array(tokenizer, hashingTF, idf, svc))
 
