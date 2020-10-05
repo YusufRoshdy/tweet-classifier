@@ -29,7 +29,7 @@ object LRModel {
             .setInputCol(hashingTF.getOutputCol)
             .setOutputCol("features")
         val lr = new LogisticRegression()
-            .setMaxIter(10)
+            .setMaxIter(100)
         val pipeline = new Pipeline()
             .setStages(Array(tokenizer, hashingTF, idf, lr))
 
