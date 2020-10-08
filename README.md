@@ -10,9 +10,9 @@ The Social Sentiment Analysis problem statement is to analyze the sentiment of s
 
 ## Method
 In our project, we used grid search and cross-validation on 3 different ML models: Logistic Regression, Random Forst, and Leaniar SVC, using data provided by the course staff to train and test our model then streamed tweets for 24 hours and we got the following results:
+ Model | Test F1 score | Stream F1 score | Precission|Recall | Accuracy |
+| -------- | -------- | -------- | -------- | -------- | ------ |
+| Logistic Reression    | 0.7065     | text     | text | text | text |
+| Random Forest    | 0.5293     | Text     | text | text | text |
+| Linear SVC   | 0.7093    | 0.8242   | 0.8717 | 0.7816 |  0.7576 |
 
-| _Model_               | _Test F1 score_ | _Stream F1 score_ |
-| --------------------- | --------------- | ----------------- |
-| Logistic Regression   | 0.6893215310    |                   |
-| Random Forst          | 0.5128763401    |                   |
-| Linear SVC            | 0.6921739994    | 0.8242424242      | 
