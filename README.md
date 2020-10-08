@@ -1,7 +1,5 @@
 # IBD Assignment 2: Stream Processing with Spark
 
-[ToC]
-
 ## Introduction
 
 Team Members:
