@@ -12,7 +12,7 @@ object LRModel {
         val spark = SparkSession.builder.appName("LRModel").getOrCreate()
         import spark.implicits._
 
-        // UDF to remove repetitive words, punctuation, and trailing whitespaces
+        // UDF to remove repetitive characters, punctuation, and trailing whitespaces
         val preprocess: String => String = _.trim()
             .replaceAll("""[\p{Punct}]""", "")
             .replaceAll("""(.)\1+""", "$1$1")
