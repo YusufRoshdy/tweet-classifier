@@ -24,7 +24,7 @@ Three different datasets ([Large Movie Review Dataset](http://ai.stanford.edu/~a
 
 
 #### Building the Model
-After preprocessing the data by removing repetitive characters, punctuations, and trailing whitespaces, the data was splitted into two sets of train and test with ratio of 70:30. Then cross-Validation and grid-search were used to train the model with a pipeline of feature extraction and the specified model, then tested on the test set to evaluate the model's performance.
+After preprocessing the data by removing repetitive characters, punctuations, and trailing whitespaces, the data was split into two sets of train and test with a ratio of 70:30. Then cross-Validation and grid-search were used to train the model with a pipeline of feature extraction and the specified model, then tested on the test set to evaluate the model's performance.
 
 The diagram below describes the architecture of training the model.
 
@@ -47,21 +47,21 @@ In our project, we used grid search and cross-validation on 3 different ML model
 * Linear SVC
 
 ### Preprocessing Steps
-* Removing Repetative words
-* Removing Puctuations
+* Removing Repetitive words
+* Removing Punctuations
 * Removing Trailing white spaces
 ### Classification Models
 * Logistic Regression
 
-  Logistic regression is the appropriate regression analysis to conduct when the dependent variable is dichotomous (binary). Logistic regression is used to describe data and to explain the relationship between one dependent binary variable and one or more nominal, ordinal, interval or ratio-level independent variables.
+  Logistic regression is the appropriate regression analysis to conduct when the dependent variable is dichotomous (binary). Logistic regression is used to describe data and to explain the relationship between one dependent binary variable and one or more nominal, ordinal, interval, or ratio-level independent variables.
 
 * Random Forest
 
-    The random forest is a classification algorithm consisting of many decisions trees. It uses bagging and feature randomness when building each individual tree to try to create an uncorrelated forest of trees whose prediction by committee is more accurate than that of any individual tree.
+    The random forest is a classification algorithm consisting of many decision trees. It uses bagging and feature randomness when building each individual tree to try to create an uncorrelated forest of trees whose prediction by committee is more accurate than that of any individual tree.
     
 * Linear SVC
 
-    The objective of a Linear SVC (Support Vector Classifier) is to fit to the data we provide, returning a "best fit" hyperplane that divides, or categorizes, our data. From there, after getting the hyperplane, we can then feed some features to our classifier to see what the "predicted" class is.
+    The objective of a Linear SVC (Support Vector Classifier) is to fit the data we provide, returning a "best fit" hyperplane that divides or categorizes our data. From there, after getting the hyperplane, we can then feed some features to our classifier to see what the "predicted" class is.
 ### Hyperparameters Tuning
 The method used for hyperparameters tuning is **Cross-Validation** and **Grid Search**.
 It selects the best model and the best set of hyperparameters according to the validation results.
@@ -77,9 +77,9 @@ spark-submit --master yarn --class <CLASS_NAME> <JAR_FILE_NAME>.jar <INPUT_DATA>
 **Parameters**
 - `<CLASS_NAME>`: class name aka model name (`LRModel`, `RFModel`, `SVCModel`).
 - `<JAR_FILE_NAME>`: name of the compiled binary.
-- `<INPUT_DATA>`: name of the csv input file with headers `text`, `label`.
-- `<SAVED_MODEL_NAME>`: name of folder to save trained model.
-- `<MODEL_OUTPUT>`: name of folder to save the prediction output of the model on test set.
+- `<INPUT_DATA>`: name of the CSV input file with headers `text`, `label`.
+- `<SAVED_MODEL_NAME>`: name of the folder to save the trained model.
+- `<MODEL_OUTPUT>`: name of the folder to save the prediction output of the model on the test set.
 
 
 After that, we stream the data to the pre-trained model as follows:
@@ -90,9 +90,9 @@ spark-submit --master yarn --class <CLASS_NAME> <JAR_FILE_NAME>.jar <SAVED_MODEL
 **Parameters**
 - `<CLASS_NAME>`: class name (`Stream`).
 - `<JAR_FILE_NAME>`: name of the compiled binary.
-- `<SAVED_MODEL_NAME>`: name of the pretrained model that will classify the streamed data.
+- `<SAVED_MODEL_NAME>`: name of the pre-trained model that will classify the streamed data.
 - `<TIME>`: for how long we will monitor the twitter stream (in Milliseconds).
-- `<MODEL_STREAM_OUTPUT>`: name of folder that will store the prediction output of the model.
+- `<MODEL_STREAM_OUTPUT>`: name of the folder that will store the prediction output of the model.
 
 In our case, the commands for submitting jobs were as follows:
 
