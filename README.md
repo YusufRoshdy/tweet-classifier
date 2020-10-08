@@ -1,8 +1,14 @@
 # IBD Assignment 2: Stream Processing with Spark
 
+<<<<<<< HEAD
 
 ## Introduction
 Team: `coonhound`
+=======
+## Introduction
+Team: `coonhound`
+
+>>>>>>> 09a61261d1e09ae3f95a29afd4d07b3fbef14479
 Members:
 - Hussein Younes `BS18-DS-02`
 - Trang Nguyen `BS18-DS-01`
@@ -64,7 +70,11 @@ In our project, we used grid search and cross-validation on 3 different ML model
     The objective of a Linear SVC (Support Vector Classifier) is to fit to the data we provide, returning a "best fit" hyperplane that divides, or categorizes, our data. From there, after getting the hyperplane, we can then feed some features to our classifier to see what the "predicted" class is.
 ### Hyperparameters Tuning
 The method used for hyperparameters tuning is **Cross-Validation** and **Grid Search**.
+<<<<<<< HEAD
 It selects the best model and the best set of hyperparameters according to the validation results.
+=======
+It selectes the best model and the best set of hyperparameters according to the validation results.
+>>>>>>> 09a61261d1e09ae3f95a29afd4d07b3fbef14479
 
 ## Testing
 
@@ -122,7 +132,11 @@ In this case, the tweet is correctly predicted **1** - happy or neutral.
 
 The streamed data predicted from the model were manually labeled then compaired to the model's predictions.
 
+<<<<<<< HEAD
 **Note:** only the output of SVC were fully hand labeled, for random forest and logistic regression only 100 label were manualy done just to estimate there performance.
+=======
+**NOTE:** only the output of SVC were fully hand labeled, for random forest and logistic regression only 100 label were manualy done just to estimate there performance.
+>>>>>>> 09a61261d1e09ae3f95a29afd4d07b3fbef14479
 
 The following table shows the results analysis:
 | Model               | Test F1 score | Stream F1 score | Precission | Recall | Accuracy |
@@ -150,7 +164,11 @@ The project was divided in 4 phases, all members actively participated. The foll
 
 ## Conclusion and Further Improvements
 
+<<<<<<< HEAD
 We have built a model that classifies data coming from a stream of tweets, we tried three models: `Logistic Regression`, `Random Forest`, and `Linear SVC`. The models were first trained on the chosen dataset, the models were validated using Grid Search and cross validation, and tested using the test data (a subset of the data set).
+=======
+We have built a model that classifies data coming from a stream of tweets, the tried three models: `Logistic Regression`, `Random Forest`, and `Linear SVC`. The models were first trained on the given dataset, the model was validated using Grid Search cross validation, and tested using the test data (a subset of the dataset).
+>>>>>>> 09a61261d1e09ae3f95a29afd4d07b3fbef14479
 
 The results were analyzed and the confusion matrix was calculated to get the `accuracy score`, `F1-score`, `precistion`, and `recall`.
 
