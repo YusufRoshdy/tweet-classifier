@@ -1,27 +1,39 @@
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.sql.types.DoubleType
 import org.apache.spark.ml.classification.LinearSVC
-import org.apache.spark.ml.feature.{HashingTF, Tokenizer, IDF}
+import org.apache.spark.ml.feature.{HashingTF, Tokenizer, IDF, StopWordsRemover}
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.tuning.{CrossValidator, ParamGridBuilder}
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.udf
 
 object SVCModel {
     def main(args: Array[String]): Unit = {
         val spark = SparkSession.builder.appName("SVCModel").getOrCreate()
         import spark.implicits._
 
+        // UDF to remove repetitive words, punctuation, and trailing whitespaces
+        val preprocess: String => String = _.trim()
+            .replaceAll("""[\p{Punct}]""", "")
+            .replaceAll("""(.)\1+""", "$1$1")
+        val preprocessUDF = udf(preprocess)
+
         // Prepare dataset
         val data = spark.read.format("csv")
             .option("header", "true")
             .load(args(0))
             .withColumn("label", 'label cast DoubleType)
+            .withColumn("preprocessedText", preprocessUDF('text))
+
         val Array(training, test) = data.randomSplit(Array(0.7, 0.3))
 
-        // Configure an ML pipeline with 4 stages: tokenizer, hasingTF, idf, svc
+        // Configure an ML pipeline
         val tokenizer = new Tokenizer()
-            .setInputCol("text")
+            .setInputCol("preprocessedText")
             .setOutputCol("words")
+        // val remover = new StopWordsRemover()
+            // .setInputCol(tokenizer.getOutputCol)
+            // .setOutputCol("filtered")
         val hashingTF = new HashingTF()
             .setInputCol(tokenizer.getOutputCol)
             .setOutputCol("rawFeatures")

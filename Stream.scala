@@ -5,6 +5,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.{Seconds, StreamingContext, Time}
 //import java.text.SimpleDateFormat
+import org.apache.spark.sql.functions.udf
 
 object Stream {
     def main(args: Array[String]): Unit = {
@@ -30,8 +31,16 @@ object Stream {
             val spark = SparkSessionSingleton.getInstance(rdd.sparkContext.getConf)
             import spark.implicits._
 
+            // UDF to remove repetitive charactes, punctuation, and trailing whitespaces
+            val preprocess: String => String = _.trim()
+                .replaceAll("""[\p{Punct}]""", "")
+                .replaceAll("""(.)\1+""", "$1$1")
+            val preprocessUDF = udf(preprocess)
+
             // Convert RDD[String] to DataFrame
-            val linesDataFrame = rdd.map((time.toString(), _)).toDF("time", "text")
+            val linesDataFrame = rdd.map((time.toString(), _))
+                .toDF("time", "text")
+                .withColumn("preprocessedText", preprocessUDF('text))
 
             // Make prediction
             val predictions = model.transform(linesDataFrame)
